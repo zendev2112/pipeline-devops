@@ -132,7 +132,7 @@ jobs:
       - name: Plan
         if: ${{ secrets.GCP_SA_KEY != '' }}
         run: terraform init && terraform plan -no-color -out=tfplan | tee plan.txt
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: ${{ secrets.GCP_SA_KEY != '' }}
         with:
           name: terraform-plan
