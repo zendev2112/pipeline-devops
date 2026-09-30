@@ -1,0 +1,175 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      terraform_apply:
+        description: "Aplicar Terraform en GCP (crea el cluster, cuesta plata)"
+        type: boolean
+        default: false
+
+env:
+  IMAGE: ghcr.io/${{ github.repository_owner }}/pipeline-devops-app
+
+permissions:
+  contents: read
+  packages: write
+  security-events: write
+  id-token: write
+
+jobs:
+  # ---------- 1. Build y test ----------
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+
+  # ---------- 2. SAST ----------
+  sast-codeql:
+    name: SAST (CodeQL)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: github/codeql-action/init@v3
+        with:
+          languages: javascript
+      - uses: github/codeql-action/analyze@v3
+
+  sast-trivy-config:
+    name: SAST (Trivy IaC + Dockerfile)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: config
+          scan-ref: .
+          format: sarif
+          output: trivy-config.sarif
+          severity: HIGH,CRITICAL
+          exit-code: '0'
+      - uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-config.sarif
+
+  # ---------- 3. Imagen Docker ----------
+  build-push:
+    name: Build & push imagen
+    needs: [test]
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.meta.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE }}
+          tags: |
+            type=sha,prefix=sha-
+            type=ref,event=tag
+            type=raw,value=latest,enable={{is_default_branch}}
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          load: ${{ github.event_name == 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Escaneo de vulnerabilidades de la imagen
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: ${{ env.IMAGE }}:${{ steps.meta.outputs.version }}
+          format: table
+          severity: HIGH,CRITICAL
+          exit-code: '0'
+
+  # ---------- 4. Terraform ----------
+  terraform:
+    name: Terraform plan${{ inputs.terraform_apply && ' + apply' || '' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+    env:
+      TF_VAR_project_id: ${{ secrets.GCP_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - run: terraform fmt -check -recursive
+      - run: terraform init -backend=false
+      - run: terraform validate
+      - name: Auth GCP
+        if: ${{ secrets.GCP_SA_KEY != '' }}
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+      - name: Plan
+        if: ${{ secrets.GCP_SA_KEY != '' }}
+        run: terraform init && terraform plan -no-color -out=tfplan | tee plan.txt
+      - uses: actions/upload-artifact@v4
+        if: ${{ secrets.GCP_SA_KEY != '' }}
+        with:
+          name: terraform-plan
+          path: terraform/plan.txt
+      - name: Apply
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.terraform_apply }}
+        run: terraform apply -auto-approve tfplan
+
+  # ---------- 5. Deploy a Kubernetes (kind efímero en el runner) + DAST ----------
+  deploy-and-dast:
+    name: Deploy K8s + DAST (ZAP)
+    needs: [build-push]
+    if: ${{ github.event_name != 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: helm/kind-action@v1
+        with:
+          cluster_name: ci
+          config: scripts/kind-config.yaml
+      - name: Desplegar manifiestos
+        run: |
+          kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.1/deploy/static/provider/kind/deploy.yaml
+          kubectl -n ingress-nginx rollout status deploy/ingress-nginx-controller --timeout=180s
+          kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+          kubectl apply -f k8s/namespace.yaml -f k8s/configmap.yaml -f k8s/deployment.yaml -f k8s/service.yaml -f k8s/ingress.yaml -f k8s/hpa.yaml
+          kubectl -n pipeline-devops set image deploy/app app=${{ env.IMAGE }}:${{ needs.build-push.outputs.tag }}
+          kubectl -n pipeline-devops rollout status deploy/app --timeout=180s
+          kubectl -n pipeline-devops get pods,svc,ingress,hpa
+      - name: Smoke test
+        run: |
+          curl -fsS -H 'Host: app.localtest.me' http://localhost/health
+          curl -fsS -H 'Host: app.localtest.me' http://localhost/metrics | head -5
+      - name: DAST con OWASP ZAP
+        uses: zaproxy/action-baseline@v0.14.0
+        with:
+          target: http://app.localtest.me
+          fail_action: false
+          allow_issue_writing: false
+          artifact_name: zap-report

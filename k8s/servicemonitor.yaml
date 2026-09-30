@@ -1,0 +1,14 @@
+# Le dice al Prometheus Operator (kube-prometheus-stack) que scrapee /metrics de la app
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: app
+  namespace: pipeline-devops
+  labels: { release: monitoring }
+spec:
+  selector:
+    matchLabels: { app: pipeline-devops-app }
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s

@@ -1,0 +1,18 @@
+# Entorno local completo: app + Prometheus + Grafana, sin Kubernetes
+services:
+  app:
+    build: .
+    ports: ["3000:3000"]
+    environment: { APP_VERSION: compose }
+  prometheus:
+    image: prom/prometheus:v2.55.1
+    ports: ["9090:9090"]
+    volumes: ["./monitoring/prometheus-local.yml:/etc/prometheus/prometheus.yml:ro"]
+  grafana:
+    image: grafana/grafana:11.3.0
+    ports: ["3001:3000"]
+    environment: { GF_SECURITY_ADMIN_PASSWORD: admin, GF_AUTH_ANONYMOUS_ENABLED: "true" }
+    volumes:
+      - ./monitoring/grafana-datasource.yml:/etc/grafana/provisioning/datasources/ds.yml:ro
+      - ./monitoring/grafana-dashboards.yml:/etc/grafana/provisioning/dashboards/dash.yml:ro
+      - ./monitoring/dashboards:/var/lib/grafana/dashboards:ro

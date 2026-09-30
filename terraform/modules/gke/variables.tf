@@ -1,0 +1,9 @@
+variable "name" { type = string }
+variable "location" { type = string }
+variable "network" { type = string }
+variable "subnetwork" { type = string }
+variable "machine_type" { type = string }
+variable "min_nodes" { type = number }
+variable "max_nodes" { type = number }
+variable "preemptible" { type = bool }
+variable "labels" { type = map(string) }

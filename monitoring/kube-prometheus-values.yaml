@@ -1,0 +1,15 @@
+# Valores para: helm install monitoring prometheus-community/kube-prometheus-stack -n monitoring -f este-archivo
+grafana:
+  adminPassword: admin
+  service: { type: ClusterIP }
+  sidecar:
+    dashboards: { enabled: true, label: grafana_dashboard }
+prometheus:
+  prometheusSpec:
+    retention: 2d
+    resources: { requests: { cpu: 100m, memory: 256Mi } }
+    serviceMonitorSelectorNilUsesHelmValues: false   # que tome ServiceMonitors de cualquier namespace
+alertmanager: { enabled: false }
+kubeEtcd: { enabled: false }
+kubeControllerManager: { enabled: false }
+kubeScheduler: { enabled: false }

@@ -1,0 +1,11 @@
+node_modules/
+coverage/
+.env
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+terraform/*.tfvars
+!terraform/terraform.tfvars.example
+*.json.key
+gcp-key.json
