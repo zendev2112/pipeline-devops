@@ -10,13 +10,15 @@ WORKDIR /app
 COPY app/package*.json ./
 RUN --mount=type=cache,target=/root/.npm npm ci
 COPY app/ .
-RUN npm test
+RUN npm test && touch /tests-ok
 
 # ---------- Etapa 3: runtime mínimo ----------
 FROM node:22-alpine AS runtime
 ENV NODE_ENV=production PORT=3000
 WORKDIR /app
 RUN addgroup -S app && adduser -S app -G app
+# Depender de la etapa test garantiza que la imagen final solo se construye si los tests pasan
+COPY --from=test /tests-ok /tmp/tests-ok
 COPY --from=deps --chown=app:app /app/node_modules ./node_modules
 COPY --chown=app:app app/package.json ./
 COPY --chown=app:app app/src ./src
