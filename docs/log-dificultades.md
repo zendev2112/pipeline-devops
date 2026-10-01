@@ -4,6 +4,7 @@ Registro cronológico inverso de los problemas encontrados al construir el pipel
 
 | Cuándo | Problema | Causa | Solución |
 | --- | --- | --- | --- |
+| 1/10 12:20 | Run de `main` fallaba al aplicar el Ingress: "failed calling webhook validate.nginx.ingress.kubernetes.io: connection refused" | Condición de carrera: el rollout del controlador de ingress-nginx termina unos segundos antes de que su webhook de validación acepte conexiones. Intermitente; dos runs previos con el mismo código habían pasado | Bucle de reintentos (12 × 5 s) alrededor del `kubectl apply` de los manifiestos |
 | 1/10 09:00 | Pods de Prometheus/Grafana (Helm) y luego los de la app quedaban en `Pending` en kind | `kube-scheduler` en CrashLoopBackOff: perdía la elección de líder porque el API server no respondía en 5 s. Notebook de 2 núcleos, VM de Docker Desktop de 1,7 GB; kube-prometheus-stack completo la saturaba | Desinstalar el stack Helm en local y escribir `monitoring/lite` (Prometheus + Grafana sin operador, ~250 MB). `local-up.sh` lo usa por defecto; `MONITORING=full` conserva la opción Helm |
 | 1/10 08:40 | `helm upgrade --install` fallaba con "another operation is in progress" | Instalación anterior cortada por disco lleno; release en `pending-install` | `helm uninstall` y reinstalar |
 | 1/10 08:20 | Docker no respondía, el script local fallaba sin mensaje claro | Disco raíz al 100 % (218 GB) tras descargar imágenes de kind, ingress y Prometheus | Liberar 17 GB borrando cachés regenerables (`~/.cache` de Chrome, Puppeteer, TypeScript, uv) y reiniciar Docker Desktop |
