@@ -19,7 +19,7 @@ spec:
         prometheus.io/port: "3000"
         prometheus.io/path: /metrics
     spec:
-      securityContext: { runAsNonRoot: true, seccompProfile: { type: RuntimeDefault } }
+      securityContext: { runAsNonRoot: true, runAsUser: 10001, runAsGroup: 10001, seccompProfile: { type: RuntimeDefault } }
       containers:
         - name: app
           image: ghcr.io/zendev2112/pipeline-devops-app:latest   # el pipeline reemplaza el tag

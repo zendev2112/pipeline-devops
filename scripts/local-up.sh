@@ -15,7 +15,7 @@ kind load docker-image "$IMAGE" --name "$CLUSTER"
 
 echo ">> ingress-nginx"
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.1/deploy/static/provider/kind/deploy.yaml
-kubectl -n ingress-nginx rollout status deploy/ingress-nginx-controller --timeout=180s
+kubectl -n ingress-nginx rollout status deploy/ingress-nginx-controller --timeout=600s
 
 echo ">> metrics-server (necesario para el HPA)"
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
@@ -34,7 +34,7 @@ kubectl create configmap app-dashboard -n monitoring \
 echo ">> App"
 kubectl apply -k k8s/
 kubectl -n pipeline-devops set image deploy/app app="$IMAGE"
-kubectl -n pipeline-devops rollout status deploy/app --timeout=120s
+kubectl -n pipeline-devops rollout status deploy/app --timeout=300s
 
 cat <<MSG
 
