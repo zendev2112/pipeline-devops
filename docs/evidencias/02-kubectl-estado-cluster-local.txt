@@ -1,0 +1,31 @@
+$ kubectl get nodes
+NAME                            STATUS   ROLES           AGE   VERSION
+pipeline-devops-control-plane   Ready    control-plane   63m   v1.34.0
+
+$ kubectl -n pipeline-devops get all,ingress,hpa,servicemonitor
+NAME                       READY   STATUS    RESTARTS   AGE
+pod/app-69946b6888-6tnj5   1/1     Running   0          3m2s
+pod/app-69946b6888-p9vnn   1/1     Running   0          3m1s
+
+NAME          TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE
+service/app   ClusterIP   10.96.66.220   <none>        80/TCP    6m52s
+
+NAME                  READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/app   2/2     2            2           6m50s
+
+NAME                             DESIRED   CURRENT   READY   AGE
+replicaset.apps/app-69946b6888   2         2         2       3m5s
+
+NAME                                      REFERENCE        TARGETS              MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/app   Deployment/app   cpu: <unknown>/50%   2         6         2          6m49s
+
+NAME                            CLASS   HOSTS              ADDRESS     PORTS   AGE
+ingress.networking.k8s.io/app   nginx   app.localtest.me   localhost   80      6m48s
+
+NAME                                       AGE
+servicemonitor.monitoring.coreos.com/app   6m49s
+
+$ kubectl -n pipeline-devops top pods
+NAME                   CPU(cores)   MEMORY(bytes)   
+app-69946b6888-6tnj5   96m          32Mi            
+app-69946b6888-p9vnn   94m          30Mi            

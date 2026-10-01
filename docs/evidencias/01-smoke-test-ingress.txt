@@ -1,0 +1,10 @@
+$ curl http://app.localtest.me/
+{"service":"pipeline-devops-app","version":"1.0.0","hostname":"app-69946b6888-6tnj5"}
+$ curl http://app.localtest.me/health
+{"status":"ok"}
+$ curl http://app.localtest.me/metrics | head
+process_cpu_user_seconds_total 0.286458
+process_cpu_system_seconds_total 0.169514
+process_cpu_seconds_total 0.455972
+http_requests_total{method="GET",route="/ready",status="200"} 4
+http_requests_total{method="GET",route="/health",status="200"} 2

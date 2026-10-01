@@ -15,4 +15,4 @@ services:
     volumes:
       - ./monitoring/grafana-datasource.yml:/etc/grafana/provisioning/datasources/ds.yml:ro
       - ./monitoring/grafana-dashboards.yml:/etc/grafana/provisioning/dashboards/dash.yml:ro
-      - ./monitoring/dashboards:/var/lib/grafana/dashboards:ro
+      - ./monitoring/lite/app.json:/var/lib/grafana/dashboards/app.json:ro

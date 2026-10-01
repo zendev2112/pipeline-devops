@@ -1,0 +1,5 @@
+kubernetes-pods app-69946b6888-gb5pc http://10.244.0.22:3000/metrics up
+kubernetes-pods app-69946b6888-p9vnn http://10.244.0.18:3000/metrics up
+prometheus  http://localhost:9090/metrics up
+Grafana dashboard: pipeline-devops-app /d/pipeline-devops-app/pipeline-devops-app
+PromQL sum(rate(http_requests_total[5m])) = 0.5477477522512499 req/s

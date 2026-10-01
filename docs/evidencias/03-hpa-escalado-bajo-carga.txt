@@ -1,0 +1,103 @@
+# Carga: scripts/load-test.sh durante 120s. Muestreo de 'kubectl get hpa' cada 15s
+--- 08:53:48
+app   Deployment/app   cpu: 19%/50%   2     6     2     6m58s
+  app-69946b6888-6tnj5 1/1 Running
+  app-69946b6888-p9vnn 1/1 Running
+--- 08:54:03
+app   Deployment/app   cpu: 31%/50%   2     6     2     7m14s
+  app-69946b6888-6tnj5 1/1 Running
+  app-69946b6888-p9vnn 1/1 Running
+--- 08:54:19
+app   Deployment/app   cpu: 196%/50%   2     6     2     7m30s
+  app-69946b6888-6d6lv 0/1 ContainerCreating
+  app-69946b6888-6tnj5 1/1 Running
+  app-69946b6888-gb5pc 0/1 Pending
+  app-69946b6888-jrd4z 0/1 ContainerCreating
+  app-69946b6888-p9vnn 1/1 Running
+  app-69946b6888-zcmkh 0/1 ContainerCreating
+--- 08:54:36
+app   Deployment/app   cpu: 204%/50%   2     6     6     7m46s
+  app-69946b6888-6d6lv 1/1 Running
+  app-69946b6888-6tnj5 1/1 Running
+  app-69946b6888-gb5pc 0/1 Running
+  app-69946b6888-jrd4z 1/1 Running
+  app-69946b6888-p9vnn 1/1 Running
+  app-69946b6888-zcmkh 0/1 Running
+--- 08:54:52
+app   Deployment/app   cpu: 146%/50%   2     6     6     8m3s
+  app-69946b6888-6d6lv 1/1 Running
+  app-69946b6888-6tnj5 1/1 Running
+  app-69946b6888-gb5pc 1/1 Running
+  app-69946b6888-jrd4z 1/1 Running
+  app-69946b6888-p9vnn 1/1 Running
+  app-69946b6888-zcmkh 1/1 Running
+--- 08:55:08
+app   Deployment/app   cpu: 105%/50%   2     6     6     8m19s
+  app-69946b6888-6d6lv 1/1 Running
+  app-69946b6888-6tnj5 1/1 Running
+  app-69946b6888-gb5pc 1/1 Running
+  app-69946b6888-jrd4z 1/1 Running
+  app-69946b6888-p9vnn 1/1 Running
+  app-69946b6888-zcmkh 1/1 Running
+--- 08:55:24
+app   Deployment/app   cpu: 114%/50%   2     6     6     8m35s
+  app-69946b6888-6d6lv 1/1 Running
+  app-69946b6888-6tnj5 1/1 Running
+  app-69946b6888-gb5pc 1/1 Running
+  app-69946b6888-jrd4z 1/1 Running
+  app-69946b6888-p9vnn 1/1 Running
+  app-69946b6888-zcmkh 1/1 Running
+--- 08:55:40
+app   Deployment/app   cpu: 118%/50%   2     6     6     8m51s
+  app-69946b6888-6d6lv 1/1 Running
+  app-69946b6888-6tnj5 1/1 Running
+  app-69946b6888-gb5pc 1/1 Running
+  app-69946b6888-jrd4z 1/1 Running
+  app-69946b6888-p9vnn 1/1 Running
+  app-69946b6888-zcmkh 1/1 Running
+--- 08:55:56
+app   Deployment/app   cpu: 118%/50%   2     6     6     9m6s
+  app-69946b6888-6d6lv 1/1 Running
+  app-69946b6888-6tnj5 1/1 Running
+  app-69946b6888-gb5pc 1/1 Running
+  app-69946b6888-jrd4z 1/1 Running
+  app-69946b6888-p9vnn 1/1 Running
+  app-69946b6888-zcmkh 1/1 Running
+--- 08:56:11
+app   Deployment/app   cpu: 111%/50%   2     6     6     9m21s
+  app-69946b6888-6d6lv 1/1 Running
+  app-69946b6888-6tnj5 1/1 Running
+  app-69946b6888-gb5pc 1/1 Running
+  app-69946b6888-jrd4z 1/1 Running
+  app-69946b6888-p9vnn 1/1 Running
+  app-69946b6888-zcmkh 1/1 Running
+--- 08:56:26
+app   Deployment/app   cpu: 32%/50%   2     6     6     9m37s
+  app-69946b6888-6d6lv 1/1 Running
+  app-69946b6888-6tnj5 1/1 Running
+  app-69946b6888-gb5pc 1/1 Running
+  app-69946b6888-jrd4z 1/1 Running
+  app-69946b6888-p9vnn 1/1 Running
+  app-69946b6888-zcmkh 1/1 Running
+--- 08:56:42
+app   Deployment/app   cpu: 15%/50%   2     6     6     9m52s
+  app-69946b6888-6d6lv 1/1 Running
+  app-69946b6888-6tnj5 1/1 Running
+  app-69946b6888-gb5pc 1/1 Running
+  app-69946b6888-jrd4z 1/1 Running
+  app-69946b6888-p9vnn 1/1 Running
+  app-69946b6888-zcmkh 1/1 Running
+--- 08:56:57
+app   Deployment/app   cpu: 13%/50%   2     6     6     10m
+  app-69946b6888-6d6lv 1/1 Running
+  app-69946b6888-6tnj5 1/1 Running
+  app-69946b6888-gb5pc 1/1 Running
+  app-69946b6888-jrd4z 1/1 Running
+  app-69946b6888-p9vnn 1/1 Running
+  app-69946b6888-zcmkh 1/1 Running
+--- 08:57:12
+app   Deployment/app   cpu: 13%/50%   2     6     6     10m
+  app-69946b6888-6d6lv 1/1 Running
+  app-69946b6888-gb5pc 1/1 Running
+  app-69946b6888-jrd4z 1/1 Running
+  app-69946b6888-p9vnn 1/1 Running
