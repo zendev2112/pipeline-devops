@@ -118,6 +118,7 @@ jobs:
         working-directory: terraform
     env:
       TF_VAR_project_id: ${{ secrets.GCP_PROJECT_ID }}
+      HAS_GCP: ${{ secrets.GCP_SA_KEY != '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v3
@@ -125,15 +126,15 @@ jobs:
       - run: terraform init -backend=false
       - run: terraform validate
       - name: Auth GCP
-        if: ${{ secrets.GCP_SA_KEY != '' }}
+        if: env.HAS_GCP == 'true'
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
       - name: Plan
-        if: ${{ secrets.GCP_SA_KEY != '' }}
+        if: env.HAS_GCP == 'true'
         run: terraform init && terraform plan -no-color -out=tfplan | tee plan.txt
       - uses: actions/upload-artifact@v4
-        if: ${{ secrets.GCP_SA_KEY != '' }}
+        if: env.HAS_GCP == 'true'
         with:
           name: terraform-plan
           path: terraform/plan.txt
