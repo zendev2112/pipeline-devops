@@ -1,0 +1,37 @@
+$ gh run view 36853075344 --repo zendev2112/pipeline-devops
+✓ main CI/CD · 36853075344
+Triggered via push about 1 hour ago
+JOBS
+✓ SAST (Trivy IaC + Dockerfile) in 19s (ID 110339064358)
+✓ Terraform plan in 10s (ID 110339064513)
+✓ SAST (CodeQL) in 1m26s (ID 110339064551)
+✓ Test in 8s (ID 110339064654)
+✓ Build & push imagen in 30s (ID 110339131142)
+✓ Deploy K8s + DAST (ZAP) in 2m26s (ID 110339331249)
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, github/codeql-action/upload-sarif@v3. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+SAST (Trivy IaC + Dockerfile): .github#2
+! CodeQL Action v3 will be deprecated in December 2026. Please update all occurrences of the CodeQL Action in your workflow files to v4. For more information, see https://github.blog/changelog/2025-10-28-upcoming-deprecation-of-codeql-action-v3/
+SAST (Trivy IaC + Dockerfile): .github#12
+SAST (Trivy IaC + Dockerfile): .github#1
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, hashicorp/setup-terraform@v3. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+Terraform plan: .github#2
+Terraform plan: .github#1
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, github/codeql-action/analyze@v3, github/codeql-action/init@v3. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+SAST (CodeQL): .github#2
+! CodeQL Action v3 will be deprecated in December 2026. Please update all occurrences of the CodeQL Action in your workflow files to v4. For more information, see https://github.blog/changelog/2025-10-28-upcoming-deprecation-of-codeql-action-v3/
+SAST (CodeQL): .github#14
+SAST (CodeQL): .github#1
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+Test: .github#2
+Test: .github#1
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, docker/build-push-action@v6, docker/login-action@v3, docker/metadata-action@v5, docker/setup-buildx-action@v3. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+Build & push imagen: .github#4
+Build & push imagen: .github#1
+! Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, docker/login-action@v3, zaproxy/action-baseline@v0.14.0. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+Deploy K8s + DAST (ZAP): .github#2
+Deploy K8s + DAST (ZAP): .github#1
+ARTIFACTS
+zap-report
+zendev2112~pipeline-devops~396NSD.dockerbuild
+For more information about a job, try: gh run view --job=<job-id>
+View this run on GitHub: https://github.com/zendev2112/pipeline-devops/actions/runs/36853075344

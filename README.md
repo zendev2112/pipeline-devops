@@ -27,7 +27,7 @@ Infra GCP:  Terraform → módulo network (VPC + subnet) → módulo gke (cluste
 | `Dockerfile` | Multi-stage: deps → test → runtime (alpine, usuario no root, healthcheck). |
 | `k8s/` | Namespace, ConfigMap, Deployment, Service, Ingress, HPA, ServiceMonitor (kustomize). |
 | `terraform/` | Root + módulos `network` y `gke`. Variables en `variables.tf`, ejemplo en `terraform.tfvars.example`. |
-| `monitoring/` | Values de kube-prometheus-stack, dashboard Grafana, config para docker-compose. |
+| `monitoring/` | `lite/`: Prometheus + Grafana sin operador (manifiestos planos, para clusters locales chicos) y el dashboard `app.json`. `kube-prometheus-values.yaml`: values para el stack completo con Helm (GKE o máquinas con más RAM). Config para docker-compose. |
 | `.github/workflows/ci-cd.yml` | Pipeline completo. |
 | `scripts/` | `local-up.sh`, `local-down.sh`, `load-test.sh`, `tf-bootstrap.sh`, `finops-shutdown.sh`. |
 | `docs/` | Informe y evidencias. |
@@ -43,9 +43,10 @@ docker compose up --build
 ### Opción B: Kubernetes local con kind (entorno de pruebas completo)
 Requisitos: docker, kind, kubectl, helm.
 ```bash
-./scripts/local-up.sh
+./scripts/local-up.sh                 # MONITORING=full ./scripts/local-up.sh instala kube-prometheus-stack (necesita >= 4 GB en la VM de Docker)
 curl http://app.localtest.me/health
-kubectl -n monitoring port-forward svc/monitoring-grafana 3001:80   # Grafana en http://localhost:3001
+kubectl -n monitoring port-forward svc/grafana 3001:80      # Grafana en http://localhost:3001 (admin/admin)
+kubectl -n monitoring port-forward svc/prometheus 9090:9090 # Prometheus en http://localhost:9090
 ```
 Probar el auto-escalado:
 ```bash
@@ -79,7 +80,7 @@ El `terraform apply` nunca corre en push: solo desde *Run workflow* con la opci�
 ## Validar despliegue y monitoreo
 - `kubectl -n pipeline-devops get pods,svc,ingress,hpa`
 - `curl http://app.localtest.me/metrics` debe listar `http_requests_total`
-- Prometheus → Status → Targets: el ServiceMonitor `app` en estado UP
+- Prometheus → Status → Targets: los pods de la app en estado UP (vía anotaciones `prometheus.io/*` en el stack lite, o vía el ServiceMonitor `app` con kube-prometheus-stack)
 - Grafana → Dashboards → *pipeline-devops-app*: requests/s, latencia p95, CPU, errores 5xx
 - Seguridad: pestaña *Security* del repo (CodeQL, Trivy) y artefacto `zap-report` de cada run
 
@@ -92,4 +93,16 @@ El `terraform apply` nunca corre en push: solo desde *Run workflow* con la opci�
 - Dependabot mantiene imágenes y acciones actualizadas.
 
 ## Evidencias
-Ver `docs/evidencias/` y el informe `docs/informe.md`.
+En `docs/evidencias/`:
+
+| Archivo | Qué muestra |
+|---|---|
+| `01-smoke-test-ingress.txt` | `curl` a la app a través del Ingress nginx en kind |
+| `02-kubectl-estado-cluster-local.txt` | nodos, pods, service, ingress, HPA, ServiceMonitor y `kubectl top` |
+| `03-hpa-escalado-bajo-carga.txt` | el HPA pasando de 2 a 6 réplicas durante `load-test.sh` y volviendo a 2 |
+| `04-prometheus-targets.txt` | targets UP, dashboard provisionado en Grafana, consulta PromQL |
+| `05-prometheus-targets.png` | pantalla Targets de Prometheus |
+| `06-grafana-dashboard.png` | dashboard `pipeline-devops-app` con tráfico real |
+| `07-github-actions-run.txt` | run completo del pipeline con los 6 jobs en verde |
+
+Informe: `docs/informe.md`.
