@@ -154,6 +154,15 @@ jobs:
         with:
           cluster_name: ci
           config: scripts/kind-config.yaml
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Cargar la imagen en kind (evita depender de la visibilidad del registry)
+        run: |
+          docker pull ${{ env.IMAGE }}:${{ needs.build-push.outputs.tag }}
+          kind load docker-image ${{ env.IMAGE }}:${{ needs.build-push.outputs.tag }} --name ci
       - name: Desplegar manifiestos
         run: |
           kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.1/deploy/static/provider/kind/deploy.yaml
@@ -163,6 +172,12 @@ jobs:
           kubectl -n pipeline-devops set image deploy/app app=${{ env.IMAGE }}:${{ needs.build-push.outputs.tag }}
           kubectl -n pipeline-devops rollout status deploy/app --timeout=180s
           kubectl -n pipeline-devops get pods,svc,ingress,hpa
+      - name: Diagnóstico si falla el despliegue
+        if: failure()
+        run: |
+          kubectl -n pipeline-devops get pods -o wide
+          kubectl -n pipeline-devops describe pods | tail -40
+          kubectl -n pipeline-devops logs -l app=pipeline-devops-app --tail=50 || true
       - name: Smoke test
         run: |
           curl -fsS -H 'Host: app.localtest.me' http://localhost/health
