@@ -180,6 +180,10 @@ jobs:
           kubectl -n pipeline-devops logs -l app=pipeline-devops-app --tail=50 || true
       - name: Smoke test
         run: |
+          for i in $(seq 1 30); do
+            curl -fsS -H 'Host: app.localtest.me' http://localhost/health && break
+            echo "esperando al ingress ($i)..."; sleep 3
+          done
           curl -fsS -H 'Host: app.localtest.me' http://localhost/health
           curl -fsS -H 'Host: app.localtest.me' http://localhost/metrics | head -5
       - name: DAST con OWASP ZAP
