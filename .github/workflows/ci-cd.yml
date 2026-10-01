@@ -168,7 +168,11 @@ jobs:
           kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.12.1/deploy/static/provider/kind/deploy.yaml
           kubectl -n ingress-nginx rollout status deploy/ingress-nginx-controller --timeout=180s
           kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-          kubectl apply -f k8s/namespace.yaml -f k8s/configmap.yaml -f k8s/deployment.yaml -f k8s/service.yaml -f k8s/ingress.yaml -f k8s/hpa.yaml
+          # El webhook de validación de ingress-nginx tarda unos segundos más que el rollout en aceptar conexiones
+          for i in $(seq 1 12); do
+            kubectl apply -f k8s/namespace.yaml -f k8s/configmap.yaml -f k8s/deployment.yaml -f k8s/service.yaml -f k8s/ingress.yaml -f k8s/hpa.yaml && break
+            echo "webhook de ingress aún no disponible, reintento $i..."; sleep 5
+          done
           kubectl -n pipeline-devops set image deploy/app app=${{ env.IMAGE }}:${{ needs.build-push.outputs.tag }}
           kubectl -n pipeline-devops rollout status deploy/app --timeout=180s
           kubectl -n pipeline-devops get pods,svc,ingress,hpa
