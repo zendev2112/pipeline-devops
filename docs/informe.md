@@ -31,7 +31,7 @@ La etapa *runtime* copia un marcador generado por *test*, de modo que la imagen 
 
 ## 3. Terraform
 
-Módulo raíz y dos módulos propios. `validate` y `plan` corren en cada push; el `apply` sobre GCP es manual.
+Módulo raíz y dos módulos propios. `validate` corre en cada push. El 2/10/2026 se ejecutó el `apply` real sobre un proyecto de Google Cloud: creó la VPC, la subred, el cluster GKE y el node pool, se desplegó la app encima y después se destruyó todo (evidencias 13 a 20).
 
 | Módulo / archivo | Qué crea |
 | --- | --- |
@@ -103,11 +103,17 @@ Ver README: nivel 1 `docker compose up --build`; nivel 2 `./scripts/local-up.sh`
 
 ## 10. Evidencias
 
-En `docs/evidencias/`: `01-smoke-test-ingress.txt`, `02-kubectl-estado-cluster-local.txt`, `03-hpa-escalado-bajo-carga.txt`, `04-prometheus-targets.txt`, `05-prometheus-targets.png`, `06-grafana-dashboard.png`, `07-github-actions-run.txt`, `08-prometheus-alertas.png`, `09-github-actions-run.png`, `10-github-actions-historial.png`, `11-seguridad-sast-dast.txt`, `12-ghcr-imagen-publicada.txt`. Último run verde: 37032715308.
+En `docs/evidencias/`: `01-smoke-test-ingress.txt`, `02-kubectl-estado-cluster-local.txt`, `03-hpa-escalado-bajo-carga.txt`, `04-prometheus-targets.txt`, `05-prometheus-targets.png`, `06-grafana-dashboard.png`, `07-github-actions-run.txt`, `08-prometheus-alertas.png`, `09-github-actions-run.png`, `10-github-actions-historial.png`, `11-seguridad-sast-dast.txt`, `12-ghcr-imagen-publicada.txt`. `13-terraform-apply.txt`, `14-gke-despliegue.txt`, `15-terraform-destroy.txt`, `16` a `20-gcp-*.png`. Último run verde: 37032715308.
 
 ![Run de GitHub Actions](evidencias/09-github-actions-run.png)
 
 ![Alertas de Prometheus](evidencias/08-prometheus-alertas.png)
+
+![Cluster GKE en la consola de GCP](evidencias/16-gcp-clusters.png)
+
+![Workloads en GKE](evidencias/18-gcp-workloads.png)
+
+![Red VPC](evidencias/20-gcp-vpc.png)
 
 ![Prometheus targets](evidencias/05-prometheus-targets.png)
 
@@ -115,23 +121,23 @@ En `docs/evidencias/`: `01-smoke-test-ingress.txt`, `02-kubectl-estado-cluster-l
 
 ## 11. Log de dificultades y soluciones
 
-Ver [`log-dificultades.md`](log-dificultades.md): 15 problemas con causa y solución, del disco lleno al UID no numérico.
+Ver [`log-dificultades.md`](log-dificultades.md): 18 problemas con causa y solución, del disco lleno al UID no numérico.
 
 ## 12. Estado del entregable
 
-Funcionando al 85 %. Todo lo que pide la consigna existe, está en el repo y fue probado, salvo el `terraform apply` real en GCP (validado hasta `plan`).
+Funcionando al 95 %. Todo lo que pide la consigna existe, está en el repo y fue probado, incluida la infraestructura real en Google Cloud.
 
 | Requisito | Estado |
 | --- | --- |
 | Repositorio con commits claros | 100 % |
 | Dockerfile multi-stage | 100 % |
-| Terraform con variables y módulos | 75 % (sin `apply` real) |
+| Terraform con variables y módulos | 100 % (apply real en GCP el 2/10, luego destroy) |
 | Pipeline CI/CD completo | 100 % |
 | Manifiestos K8s + HPA | 100 % |
-| Monitoreo | 95 % (lite probado con dashboard y 3 reglas de alerta; Helm completo no probado en esta máquina) |
-| FinOps | 90 % (sin evidencia de facturación) |
+| Monitoreo | 95 % (lite probado con dashboard y 3 alertas; Helm completo no probado en esta máquina) |
+| FinOps | 95 % (spot, autoscaling y labels verificados en GCP; recursos destruidos tras las pruebas) |
 | README y evidencias | 100 % |
 
-Para el 100 %: `terraform apply` de una hora con capturas y `destroy`; endurecer GKE según Trivy; probar `MONITORING=full` con más memoria o en GKE.
+Deuda conocida: integrar el `apply` y el despliegue a GKE dentro del pipeline con una service account (hoy el pipeline despliega en kind y el apply fue manual); endurecer GKE según los 9 hallazgos de Trivy; activar el estado remoto en GCS; probar `MONITORING=full` y agregar Alertmanager.
 
 **Conclusiones.** Lo costoso no fue ninguna herramienta sino la integración: los fallos aparecieron en las junturas. El diagnóstico automático en el job de deploy acortó cada iteración, y los límites de la máquina llevaron a una mejora: monitoreo liviano para entornos chicos y completo para la nube.

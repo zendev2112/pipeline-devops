@@ -1,0 +1,45 @@
+# Despliegue en GKE (proyecto pf-devops-deviagge, cluster creado con Terraform), 2/10/2026
+
+$ terraform state list
+module.gke.google_container_cluster.this
+module.gke.google_container_node_pool.primary
+module.network.google_compute_network.vpc
+module.network.google_compute_subnetwork.subnet
+
+$ gcloud container node-pools list
+NAME                  MACHINE_TYPE  PREEMPTIBLE  MIN_NODE_COUNT  MAX_NODE_COUNT  DISK_TYPE
+pipeline-devops-pool  e2-small      True         1               3               pd-standard
+
+$ gcloud container clusters describe ... --format='value(resourceLabels)'
+auto-shutdown=true;cost-center=coderhouse;env=test;goog-terraform-provisioned=true;owner=zenon
+
+$ kubectl get nodes
+NAME                                                  STATUS   ROLES    AGE     VERSION
+gke-pipeline-devops--pipeline-devops--041808e2-hl69   Ready    <none>   95s     v1.35.8-gke.1225000
+gke-pipeline-devops--pipeline-devops--041808e2-n5qk   Ready    <none>   4m36s   v1.35.8-gke.1225000
+
+$ kubectl -n pipeline-devops get pods,svc,ingress,hpa -o wide
+NAME                     READY   STATUS    RESTARTS   AGE
+pod/app-d4ff4dc7-bgb9d   1/1     Running   0          2m33s
+pod/app-d4ff4dc7-rmbk5   1/1     Running   0          2m33s
+
+NAME          TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE
+service/app   ClusterIP   10.30.5.175   <none>        80/TCP    2m33s
+
+NAME                            CLASS   HOSTS              ADDRESS        PORTS   AGE
+ingress.networking.k8s.io/app   nginx   app.localtest.me   34.95.197.88   80      2m33s
+
+NAME                                      REFERENCE        TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/app   Deployment/app   cpu: 10%/50%   2         6         2          2m33s
+
+$ kubectl -n ingress-nginx get svc ingress-nginx-controller
+NAME                       TYPE           CLUSTER-IP   EXTERNAL-IP    PORT(S)                      AGE
+ingress-nginx-controller   LoadBalancer   10.30.3.88   34.95.197.88   80:32328/TCP,443:32055/TCP   4m15s
+
+$ curl -H 'Host: app.localtest.me' http://34.95.197.88/
+{"service":"pipeline-devops-app","version":"1.0.0","hostname":"app-d4ff4dc7-bgb9d"}
+$ curl -H 'Host: app.localtest.me' http://34.95.197.88/health
+{"status":"ok"}
+$ curl -sI ... | grep -i -E 'content-security|x-content-type'
+Content-Security-Policy: default-src 'self';base-uri 'self';font-src 'self' https: data:;f
+X-Content-Type-Options: nosniff

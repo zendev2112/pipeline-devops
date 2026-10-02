@@ -1,0 +1,689 @@
+module.network.google_compute_network.vpc: Refreshing state... [id=projects/pf-devops-deviagge/global/networks/pipeline-devops-vpc]
+module.network.google_compute_subnetwork.subnet: Refreshing state... [id=projects/pf-devops-deviagge/regions/southamerica-east1/subnetworks/pipeline-devops-subnet]
+module.gke.google_container_cluster.this: Refreshing state... [id=projects/pf-devops-deviagge/locations/southamerica-east1-a/clusters/pipeline-devops-gke]
+module.gke.google_container_node_pool.primary: Refreshing state... [id=projects/pf-devops-deviagge/locations/southamerica-east1-a/clusters/pipeline-devops-gke/nodePools/pipeline-devops-pool]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # module.gke.google_container_cluster.this will be destroyed
+  - resource "google_container_cluster" "this" {
+      - cluster_ipv4_cidr                        = "10.20.0.0/16" -> null
+      - default_max_pods_per_node                = 110 -> null
+      - deletion_protection                      = false -> null
+      - disable_l4_lb_firewall_reconciliation    = false -> null
+      - effective_labels                         = {
+          - "auto-shutdown"              = "true"
+          - "cost-center"                = "coderhouse"
+          - "env"                        = "test"
+          - "goog-terraform-provisioned" = "true"
+          - "owner"                      = "zenon"
+        } -> null
+      - enable_autopilot                         = false -> null
+      - enable_cilium_clusterwide_network_policy = false -> null
+      - enable_fqdn_network_policy               = false -> null
+      - enable_intranode_visibility              = false -> null
+      - enable_kubernetes_alpha                  = false -> null
+      - enable_l4_ilb_subsetting                 = false -> null
+      - enable_legacy_abac                       = false -> null
+      - enable_multi_networking                  = false -> null
+      - enable_shielded_nodes                    = true -> null
+      - enable_tpu                               = false -> null
+      - endpoint                                 = "34.95.148.225" -> null
+      - id                                       = "projects/pf-devops-deviagge/locations/southamerica-east1-a/clusters/pipeline-devops-gke" -> null
+      - initial_node_count                       = 1 -> null
+      - label_fingerprint                        = "af92542e" -> null
+      - location                                 = "southamerica-east1-a" -> null
+      - logging_service                          = "logging.googleapis.com/kubernetes" -> null
+      - master_version                           = "1.35.8-gke.1225000" -> null
+      - monitoring_service                       = "monitoring.googleapis.com/kubernetes" -> null
+      - name                                     = "pipeline-devops-gke" -> null
+      - network                                  = "projects/pf-devops-deviagge/global/networks/pipeline-devops-vpc" -> null
+      - networking_mode                          = "VPC_NATIVE" -> null
+      - node_locations                           = [] -> null
+      - node_version                             = "1.35.8-gke.1225000" -> null
+      - project                                  = "pf-devops-deviagge" -> null
+      - remove_default_node_pool                 = true -> null
+      - resource_labels                          = {
+          - "auto-shutdown" = "true"
+          - "cost-center"   = "coderhouse"
+          - "env"           = "test"
+          - "owner"         = "zenon"
+        } -> null
+      - self_link                                = "https://container.googleapis.com/v1/projects/pf-devops-deviagge/zones/southamerica-east1-a/clusters/pipeline-devops-gke" -> null
+      - services_ipv4_cidr                       = "10.30.0.0/20" -> null
+      - subnetwork                               = "projects/pf-devops-deviagge/regions/southamerica-east1/subnetworks/pipeline-devops-subnet" -> null
+      - terraform_labels                         = {
+          - "auto-shutdown"              = "true"
+          - "cost-center"                = "coderhouse"
+          - "env"                        = "test"
+          - "goog-terraform-provisioned" = "true"
+          - "owner"                      = "zenon"
+        } -> null
+        # (5 unchanged attributes hidden)
+
+      - addons_config {
+          - dns_cache_config {
+              - enabled = true -> null
+            }
+          - gce_persistent_disk_csi_driver_config {
+              - enabled = true -> null
+            }
+          - network_policy_config {
+              - disabled = true -> null
+            }
+        }
+
+      - anonymous_authentication_config {
+          - mode = "LIMITED" -> null
+        }
+
+      - binary_authorization {
+          - enabled         = false -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - cluster_autoscaling {
+          - auto_provisioning_locations = [] -> null
+          - autoscaling_profile         = "BALANCED" -> null
+          - enabled                     = false -> null
+        }
+
+      - control_plane_endpoints_config {
+          - dns_endpoint_config {
+              - allow_external_traffic = false -> null
+              - endpoint               = "gke-c960a82771214afdb1708bfda70259b39ad3-318568306378.southamerica-east1-a.gke.goog" -> null
+            }
+          - ip_endpoints_config {
+              - enabled = true -> null
+            }
+        }
+
+      - database_encryption {
+          - state    = "DECRYPTED" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - default_snat_status {
+          - disabled = false -> null
+        }
+
+      - enterprise_config {
+          - cluster_tier = "STANDARD" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - ip_allocation_policy {
+          - cluster_ipv4_cidr_block       = "10.20.0.0/16" -> null
+          - cluster_secondary_range_name  = "pods" -> null
+          - services_ipv4_cidr_block      = "10.30.0.0/20" -> null
+          - services_secondary_range_name = "services" -> null
+          - stack_type                    = "IPV4" -> null
+
+          - pod_cidr_overprovision_config {
+              - disabled = false -> null
+            }
+        }
+
+      - logging_config {
+          - enable_components = [
+              - "SYSTEM_COMPONENTS",
+              - "WORKLOADS",
+            ] -> null
+        }
+
+      - master_auth {
+          - cluster_ca_certificate = "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVMVENDQXBXZ0F3SUJBZ0lSQUx3RDN6WHhuc1BjZWNzemxnMEE4SEF3RFFZSktvWklodmNOQVFFTEJRQXcKTHpFdE1Dc0dBMVVFQXhNa01EZzVOek5rWlRBdE1UUXhNeTAwTmpnNExUazNaRFF0WVRkbFlqRTFNbUkwTkdGawpNQ0FYRFRJMk1UQXdNakU0TXpZeE5Gb1lEekl3TlRZd09USTBNVGt6TmpFMFdqQXZNUzB3S3dZRFZRUURFeVF3Ck9EazNNMlJsTUMweE5ERXpMVFEyT0RndE9UZGtOQzFoTjJWaU1UVXlZalEwWVdRd2dnR2lNQTBHQ1NxR1NJYjMKRFFFQkFRVUFBNElCandBd2dnR0tBb0lCZ1FDT0x4QVhlazNDZDJqV01zRDB0dmRjZTlQRXBiY29DNGtOME5uOQpGT1JJR0NzTXAvTnFQYVlPWUpFeUZ6ZG1RcXFDNGFobmJpRW9vZi9tajNHeVM0UmI1QWV1cmJ5U1BrOHM4cFNSClZNcmYybTFoczM1by82MHE4aHZiTkh3Z0l5YUJqbHVHOHZBQm9CTmJrd1dWb2tsc3NWVzE0ZUtTRm93NUNBQWUKMUJUWU9KQTBpeDh5UUU5U3c0RUJ1dHlCdmhUVksvR3d4YXVyZ2E1a3cva1o0RndrOWRQRDFJR3ZmYkZGMmM4dApiYjZ5b2pzcmlnRi90eTdhQUZBM244cDdXOHZ1cjNMV1FFOFM2QjRPVHQrdkJPQTJRMlgvQnNWKzVNdXhxM2s1CjM4cXNKcW9jaEt2OE9QZW11Z1Vhc0phWjd6U2NlVGJKNWgvOEh3dU9VNkNIY1FVT3ExaldrQmd0UWFnQm5YREIKZjNmVkw5WDBqOCtyS3d6N1RSMlJaTW11bHVwcVVSVUhLcUlsUEhrbTd4a0VwMGN0NFBaSzd4RDlxWkdiZmhhcQpJcmQwOWwzMUhSZEVZMVpDMVNrQkhmSTNVbkRCcXczY1JKQVlUaTBKRUtiVVJ5SGxUTlZBOTBiTmdBdWh0SWpLCldkeHZOUTEyK2wvaVVZaC9lMkxjMHlPcEVRa0NBd0VBQWFOQ01FQXdEZ1lEVlIwUEFRSC9CQVFEQWdJRU1BOEcKQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGTkFXcmdSdmViOWVMS2lzM1J3Vm5vMFpxYXdsTUEwRwpDU3FHU0liM0RRRUJDd1VBQTRJQmdRQTV4Ti9mcmExRG5vMFJZVXVpL1pxVkFmNkszemwvM3M1UHJIa3JzajNoCndxZUtyTzBiQW1rdHJ6a1lTZXlJSTJvQWMwRGpURjdTcUYzblVPbHozRmtZNkpzalFxNEc0WGFJT2xSc1R0c0kKeTJJcE9pQmxaWXFSMTRhUFM3U1lPdVNxTVU5Nlk1emRISDd2bk1HNzNOZHcxSDZjRnJkd3RFbFJsYmhmU1dKVApTbSs4NDVtQVJkWXc4ZHZCL2E4Y3FyejBrbGJMaE4zVlJoT2wxa2l4OFB3WHVRTTQwSnhROWo3bEVObjQ5amJZClNYYzZNNnhHNFJLYTJqdnZCbU8zbFl5dVRFOE83V1ZDL0RDZGd0cU5yOUx6ZlJqNE8weWhhUXB1VkZEeHJPV3IKbEdBc2tJWTB3VEtsM2E3bUpLMFBQYnVHTzlCYWhCTUc0VllrRlNQYllDTlVMTnNKSWlqa1ZTcjU0TjlKa0p6VgpHUkxBeGdCZ2RlMTVudXRQN3VUVGpjVHlSdzFHd0hXQW83YzliK3FaMHlWZkdmWU9ZcE0wZWtxRllmZ0FTblFHCnp6cFlRSzUrYmllVUhIdWpMbWtmdmpEMWovRHJmT2I3VExiOU40cGt4cDlpTzdUVUFHeFRvVHB0OGZoUlFEZ24KN3dmeFQ4b3hQYlgzMTFOSVBkTjVURDQ9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K" -> null
+            # (2 unchanged attributes hidden)
+
+          - client_certificate_config {
+              - issue_client_certificate = false -> null
+            }
+        }
+
+      - monitoring_config {
+          - enable_components = [
+              - "SYSTEM_COMPONENTS",
+              - "STORAGE",
+              - "HPA",
+              - "POD",
+              - "DAEMONSET",
+              - "DEPLOYMENT",
+              - "STATEFULSET",
+              - "CADVISOR",
+              - "KUBELET",
+              - "DCGM",
+              - "JOBSET",
+            ] -> null
+
+          - advanced_datapath_observability_config {
+              - enable_metrics = false -> null
+              - enable_relay   = false -> null
+            }
+
+          - managed_prometheus {
+              - enabled = true -> null
+            }
+        }
+
+      - network_policy {
+          - enabled  = false -> null
+          - provider = "PROVIDER_UNSPECIFIED" -> null
+        }
+
+      - node_config {
+          - disk_size_gb                = 30 -> null
+          - disk_type                   = "pd-standard" -> null
+          - effective_taints            = [] -> null
+          - enable_confidential_storage = false -> null
+          - flex_start                  = false -> null
+          - image_type                  = "COS_CONTAINERD" -> null
+          - labels                      = {
+              - "auto-shutdown" = "true"
+              - "cost-center"   = "coderhouse"
+              - "env"           = "test"
+              - "owner"         = "zenon"
+            } -> null
+          - local_ssd_count             = 0 -> null
+          - logging_variant             = "DEFAULT" -> null
+          - machine_type                = "e2-small" -> null
+          - metadata                    = {
+              - "disable-legacy-endpoints" = "true"
+            } -> null
+          - oauth_scopes                = [
+              - "https://www.googleapis.com/auth/cloud-platform",
+            ] -> null
+          - preemptible                 = true -> null
+          - resource_labels             = {
+              - "goog-gke-node-pool-provisioning-model" = "spot"
+            } -> null
+          - resource_manager_tags       = {} -> null
+          - service_account             = "default" -> null
+          - spot                        = false -> null
+          - storage_pools               = [] -> null
+          - tags                        = [] -> null
+            # (5 unchanged attributes hidden)
+
+          - boot_disk {
+              - disk_type              = "pd-standard" -> null
+              - provisioned_iops       = 0 -> null
+              - provisioned_throughput = 0 -> null
+              - size_gb                = 30 -> null
+            }
+
+          - kubelet_config {
+              - allowed_unsafe_sysctls                 = [] -> null
+              - container_log_max_files                = 0 -> null
+              - cpu_cfs_quota                          = false -> null
+              - eviction_max_pod_grace_period_seconds  = 0 -> null
+              - image_gc_high_threshold_percent        = 0 -> null
+              - image_gc_low_threshold_percent         = 0 -> null
+              - insecure_kubelet_readonly_port_enabled = "FALSE" -> null
+              - max_parallel_image_pulls               = 2 -> null
+              - pod_pids_limit                         = 0 -> null
+              - single_process_oom_kill                = false -> null
+                # (5 unchanged attributes hidden)
+            }
+
+          - shielded_instance_config {
+              - enable_integrity_monitoring = true -> null
+              - enable_secure_boot          = true -> null
+            }
+
+          - windows_node_config {
+                # (1 unchanged attribute hidden)
+            }
+        }
+
+      - node_pool {
+          - initial_node_count          = 0 -> null
+          - instance_group_urls         = [
+              - "https://www.googleapis.com/compute/v1/projects/pf-devops-deviagge/zones/southamerica-east1-a/instanceGroupManagers/gke-pipeline-devops--pipeline-devops--041808e2-grp",
+            ] -> null
+          - managed_instance_group_urls = [
+              - "https://www.googleapis.com/compute/v1/projects/pf-devops-deviagge/zones/southamerica-east1-a/instanceGroups/gke-pipeline-devops--pipeline-devops--041808e2-grp",
+            ] -> null
+          - max_pods_per_node           = 110 -> null
+          - name                        = "pipeline-devops-pool" -> null
+          - node_count                  = 2 -> null
+          - node_locations              = [
+              - "southamerica-east1-a",
+            ] -> null
+          - version                     = "1.35.8-gke.1225000" -> null
+            # (1 unchanged attribute hidden)
+
+          - autoscaling {
+              - location_policy      = "ANY" -> null
+              - max_node_count       = 3 -> null
+              - min_node_count       = 1 -> null
+              - total_max_node_count = 0 -> null
+              - total_min_node_count = 0 -> null
+            }
+
+          - management {
+              - auto_repair  = true -> null
+              - auto_upgrade = true -> null
+            }
+
+          - network_config {
+              - create_pod_range     = false -> null
+              - enable_private_nodes = false -> null
+              - pod_ipv4_cidr_block  = "10.20.0.0/16" -> null
+              - pod_range            = "pods" -> null
+              - subnetwork           = "projects/pf-devops-deviagge/regions/southamerica-east1/subnetworks/pipeline-devops-subnet" -> null
+            }
+
+          - node_config {
+              - disk_size_gb                = 30 -> null
+              - disk_type                   = "pd-standard" -> null
+              - effective_taints            = [] -> null
+              - enable_confidential_storage = false -> null
+              - flex_start                  = false -> null
+              - image_type                  = "COS_CONTAINERD" -> null
+              - labels                      = {
+                  - "auto-shutdown" = "true"
+                  - "cost-center"   = "coderhouse"
+                  - "env"           = "test"
+                  - "owner"         = "zenon"
+                } -> null
+              - local_ssd_count             = 0 -> null
+              - logging_variant             = "DEFAULT" -> null
+              - machine_type                = "e2-small" -> null
+              - metadata                    = {
+                  - "disable-legacy-endpoints" = "true"
+                } -> null
+              - oauth_scopes                = [
+                  - "https://www.googleapis.com/auth/cloud-platform",
+                ] -> null
+              - preemptible                 = true -> null
+              - resource_labels             = {
+                  - "goog-gke-node-pool-provisioning-model" = "spot"
+                } -> null
+              - resource_manager_tags       = {} -> null
+              - service_account             = "default" -> null
+              - spot                        = false -> null
+              - storage_pools               = [] -> null
+              - tags                        = [] -> null
+                # (5 unchanged attributes hidden)
+
+              - boot_disk {
+                  - disk_type              = "pd-standard" -> null
+                  - provisioned_iops       = 0 -> null
+                  - provisioned_throughput = 0 -> null
+                  - size_gb                = 30 -> null
+                }
+
+              - kubelet_config {
+                  - allowed_unsafe_sysctls                 = [] -> null
+                  - container_log_max_files                = 0 -> null
+                  - cpu_cfs_quota                          = false -> null
+                  - eviction_max_pod_grace_period_seconds  = 0 -> null
+                  - image_gc_high_threshold_percent        = 0 -> null
+                  - image_gc_low_threshold_percent         = 0 -> null
+                  - insecure_kubelet_readonly_port_enabled = "FALSE" -> null
+                  - max_parallel_image_pulls               = 2 -> null
+                  - pod_pids_limit                         = 0 -> null
+                  - single_process_oom_kill                = false -> null
+                    # (5 unchanged attributes hidden)
+                }
+
+              - shielded_instance_config {
+                  - enable_integrity_monitoring = true -> null
+                  - enable_secure_boot          = true -> null
+                }
+
+              - windows_node_config {
+                    # (1 unchanged attribute hidden)
+                }
+            }
+
+          - upgrade_settings {
+              - max_surge       = 1 -> null
+              - max_unavailable = 0 -> null
+              - strategy        = "SURGE" -> null
+            }
+        }
+
+      - node_pool_auto_config {
+          - resource_manager_tags = {} -> null
+
+          - node_kubelet_config {
+              - insecure_kubelet_readonly_port_enabled = "FALSE" -> null
+            }
+        }
+
+      - node_pool_defaults {
+          - node_config_defaults {
+              - insecure_kubelet_readonly_port_enabled = "FALSE" -> null
+              - logging_variant                        = "DEFAULT" -> null
+            }
+        }
+
+      - notification_config {
+          - pubsub {
+              - enabled = false -> null
+                # (1 unchanged attribute hidden)
+            }
+        }
+
+      - pod_autoscaling {
+          - hpa_profile = "PERFORMANCE" -> null
+        }
+
+      - private_cluster_config {
+          - enable_private_endpoint     = false -> null
+          - enable_private_nodes        = false -> null
+          - private_endpoint            = "10.10.0.2" -> null
+          - public_endpoint             = "34.95.148.225" -> null
+            # (3 unchanged attributes hidden)
+
+          - master_global_access_config {
+              - enabled = false -> null
+            }
+        }
+
+      - rbac_binding_config {
+          - enable_insecure_binding_system_authenticated   = true -> null
+          - enable_insecure_binding_system_unauthenticated = true -> null
+        }
+
+      - release_channel {
+          - channel = "REGULAR" -> null
+        }
+
+      - secret_manager_config {
+          - enabled = false -> null
+        }
+
+      - security_posture_config {
+          - mode               = "BASIC" -> null
+          - vulnerability_mode = "VULNERABILITY_MODE_UNSPECIFIED" -> null
+        }
+
+      - service_external_ips_config {
+          - enabled = false -> null
+        }
+    }
+
+  # module.gke.google_container_node_pool.primary will be destroyed
+  - resource "google_container_node_pool" "primary" {
+      - cluster                     = "pipeline-devops-gke" -> null
+      - id                          = "projects/pf-devops-deviagge/locations/southamerica-east1-a/clusters/pipeline-devops-gke/nodePools/pipeline-devops-pool" -> null
+      - initial_node_count          = 0 -> null
+      - instance_group_urls         = [
+          - "https://www.googleapis.com/compute/v1/projects/pf-devops-deviagge/zones/southamerica-east1-a/instanceGroupManagers/gke-pipeline-devops--pipeline-devops--041808e2-grp",
+        ] -> null
+      - location                    = "southamerica-east1-a" -> null
+      - managed_instance_group_urls = [
+          - "https://www.googleapis.com/compute/v1/projects/pf-devops-deviagge/zones/southamerica-east1-a/instanceGroups/gke-pipeline-devops--pipeline-devops--041808e2-grp",
+        ] -> null
+      - max_pods_per_node           = 110 -> null
+      - name                        = "pipeline-devops-pool" -> null
+      - node_count                  = 2 -> null
+      - node_locations              = [
+          - "southamerica-east1-a",
+        ] -> null
+      - project                     = "pf-devops-deviagge" -> null
+      - version                     = "1.35.8-gke.1225000" -> null
+        # (1 unchanged attribute hidden)
+
+      - autoscaling {
+          - location_policy      = "ANY" -> null
+          - max_node_count       = 3 -> null
+          - min_node_count       = 1 -> null
+          - total_max_node_count = 0 -> null
+          - total_min_node_count = 0 -> null
+        }
+
+      - management {
+          - auto_repair  = true -> null
+          - auto_upgrade = true -> null
+        }
+
+      - network_config {
+          - create_pod_range     = false -> null
+          - enable_private_nodes = false -> null
+          - pod_ipv4_cidr_block  = "10.20.0.0/16" -> null
+          - pod_range            = "pods" -> null
+          - subnetwork           = "projects/pf-devops-deviagge/regions/southamerica-east1/subnetworks/pipeline-devops-subnet" -> null
+        }
+
+      - node_config {
+          - disk_size_gb                = 30 -> null
+          - disk_type                   = "pd-standard" -> null
+          - effective_taints            = [] -> null
+          - enable_confidential_storage = false -> null
+          - flex_start                  = false -> null
+          - image_type                  = "COS_CONTAINERD" -> null
+          - labels                      = {
+              - "auto-shutdown" = "true"
+              - "cost-center"   = "coderhouse"
+              - "env"           = "test"
+              - "owner"         = "zenon"
+            } -> null
+          - local_ssd_count             = 0 -> null
+          - logging_variant             = "DEFAULT" -> null
+          - machine_type                = "e2-small" -> null
+          - metadata                    = {
+              - "disable-legacy-endpoints" = "true"
+            } -> null
+          - oauth_scopes                = [
+              - "https://www.googleapis.com/auth/cloud-platform",
+            ] -> null
+          - preemptible                 = true -> null
+          - resource_labels             = {
+              - "goog-gke-node-pool-provisioning-model" = "spot"
+            } -> null
+          - resource_manager_tags       = {} -> null
+          - service_account             = "default" -> null
+          - spot                        = false -> null
+          - storage_pools               = [] -> null
+          - tags                        = [] -> null
+            # (5 unchanged attributes hidden)
+
+          - boot_disk {
+              - disk_type              = "pd-standard" -> null
+              - provisioned_iops       = 0 -> null
+              - provisioned_throughput = 0 -> null
+              - size_gb                = 30 -> null
+            }
+
+          - kubelet_config {
+              - allowed_unsafe_sysctls                 = [] -> null
+              - container_log_max_files                = 0 -> null
+              - cpu_cfs_quota                          = false -> null
+              - eviction_max_pod_grace_period_seconds  = 0 -> null
+              - image_gc_high_threshold_percent        = 0 -> null
+              - image_gc_low_threshold_percent         = 0 -> null
+              - insecure_kubelet_readonly_port_enabled = "FALSE" -> null
+              - max_parallel_image_pulls               = 2 -> null
+              - pod_pids_limit                         = 0 -> null
+              - single_process_oom_kill                = false -> null
+                # (5 unchanged attributes hidden)
+            }
+
+          - shielded_instance_config {
+              - enable_integrity_monitoring = true -> null
+              - enable_secure_boot          = true -> null
+            }
+
+          - windows_node_config {
+                # (1 unchanged attribute hidden)
+            }
+        }
+
+      - upgrade_settings {
+          - max_surge       = 1 -> null
+          - max_unavailable = 0 -> null
+          - strategy        = "SURGE" -> null
+        }
+    }
+
+  # module.network.google_compute_network.vpc will be destroyed
+  - resource "google_compute_network" "vpc" {
+      - auto_create_subnetworks                   = false -> null
+      - bgp_always_compare_med                    = false -> null
+      - bgp_best_path_selection_mode              = "LEGACY" -> null
+      - delete_default_routes_on_create           = false -> null
+      - enable_ula_internal_ipv6                  = false -> null
+      - id                                        = "projects/pf-devops-deviagge/global/networks/pipeline-devops-vpc" -> null
+      - mtu                                       = 0 -> null
+      - name                                      = "pipeline-devops-vpc" -> null
+      - network_firewall_policy_enforcement_order = "AFTER_CLASSIC_FIREWALL" -> null
+      - network_id                                = "5114351813909133724" -> null
+      - numeric_id                                = "5114351813909133724" -> null
+      - project                                   = "pf-devops-deviagge" -> null
+      - routing_mode                              = "REGIONAL" -> null
+      - self_link                                 = "https://www.googleapis.com/compute/v1/projects/pf-devops-deviagge/global/networks/pipeline-devops-vpc" -> null
+        # (5 unchanged attributes hidden)
+    }
+
+  # module.network.google_compute_subnetwork.subnet will be destroyed
+  - resource "google_compute_subnetwork" "subnet" {
+      - creation_timestamp         = "2026-10-02T12:35:32.188-07:00" -> null
+      - enable_flow_logs           = false -> null
+      - gateway_address            = "10.10.0.1" -> null
+      - id                         = "projects/pf-devops-deviagge/regions/southamerica-east1/subnetworks/pipeline-devops-subnet" -> null
+      - ip_cidr_range              = "10.10.0.0/24" -> null
+      - name                       = "pipeline-devops-subnet" -> null
+      - network                    = "https://www.googleapis.com/compute/v1/projects/pf-devops-deviagge/global/networks/pipeline-devops-vpc" -> null
+      - private_ip_google_access   = true -> null
+      - private_ipv6_google_access = "DISABLE_GOOGLE_ACCESS" -> null
+      - project                    = "pf-devops-deviagge" -> null
+      - purpose                    = "PRIVATE" -> null
+      - region                     = "southamerica-east1" -> null
+      - self_link                  = "https://www.googleapis.com/compute/v1/projects/pf-devops-deviagge/regions/southamerica-east1/subnetworks/pipeline-devops-subnet" -> null
+      - stack_type                 = "IPV4_ONLY" -> null
+      - subnetwork_id              = 3393745850221836651 -> null
+        # (9 unchanged attributes hidden)
+
+      - secondary_ip_range {
+          - ip_cidr_range           = "10.20.0.0/16" -> null
+          - range_name              = "pods" -> null
+            # (1 unchanged attribute hidden)
+        }
+      - secondary_ip_range {
+          - ip_cidr_range           = "10.30.0.0/20" -> null
+          - range_name              = "services" -> null
+            # (1 unchanged attribute hidden)
+        }
+    }
+
+Plan: 0 to add, 0 to change, 4 to destroy.
+
+Changes to Outputs:
+  - cluster_location = "southamerica-east1-a" -> null
+  - cluster_name     = "pipeline-devops-gke" -> null
+  - get_credentials  = "gcloud container clusters get-credentials pipeline-devops-gke --zone southamerica-east1-a --project pf-devops-deviagge" -> null
+module.gke.google_container_node_pool.primary: Destroying... [id=projects/pf-devops-deviagge/locations/southamerica-east1-a/clusters/pipeline-devops-gke/nodePools/pipeline-devops-pool]
+module.gke.google_container_node_pool.primary: Still destroying... [id=projects/pf-devops-deviagge/locations/s...ops-gke/nodePools/pipeline-devops-pool, 00m10s elapsed]
+module.gke.google_container_node_pool.primary: Still destroying... [id=projects/pf-devops-deviagge/locations/s...ops-gke/nodePools/pipeline-devops-pool, 00m20s elapsed]
+module.gke.google_container_node_pool.primary: Still destroying... [id=projects/pf-devops-deviagge/locations/s...ops-gke/nodePools/pipeline-devops-pool, 00m30s elapsed]
+module.gke.google_container_node_pool.primary: Still destroying... [id=projects/pf-devops-deviagge/locations/s...ops-gke/nodePools/pipeline-devops-pool, 00m40s elapsed]
+module.gke.google_container_node_pool.primary: Still destroying... [id=projects/pf-devops-deviagge/locations/s...ops-gke/nodePools/pipeline-devops-pool, 00m50s elapsed]
+module.gke.google_container_node_pool.primary: Still destroying... [id=projects/pf-devops-deviagge/locations/s...ops-gke/nodePools/pipeline-devops-pool, 01m00s elapsed]
+module.gke.google_container_node_pool.primary: Still destroying... [id=projects/pf-devops-deviagge/locations/s...ops-gke/nodePools/pipeline-devops-pool, 01m10s elapsed]
+module.gke.google_container_node_pool.primary: Still destroying... [id=projects/pf-devops-deviagge/locations/s...ops-gke/nodePools/pipeline-devops-pool, 01m20s elapsed]
+module.gke.google_container_node_pool.primary: Still destroying... [id=projects/pf-devops-deviagge/locations/s...ops-gke/nodePools/pipeline-devops-pool, 01m30s elapsed]
+module.gke.google_container_node_pool.primary: Still destroying... [id=projects/pf-devops-deviagge/locations/s...ops-gke/nodePools/pipeline-devops-pool, 01m40s elapsed]
+module.gke.google_container_node_pool.primary: Still destroying... [id=projects/pf-devops-deviagge/locations/s...ops-gke/nodePools/pipeline-devops-pool, 01m50s elapsed]
+module.gke.google_container_node_pool.primary: Still destroying... [id=projects/pf-devops-deviagge/locations/s...ops-gke/nodePools/pipeline-devops-pool, 02m00s elapsed]
+module.gke.google_container_node_pool.primary: Still destroying... [id=projects/pf-devops-deviagge/locations/s...ops-gke/nodePools/pipeline-devops-pool, 02m10s elapsed]
+module.gke.google_container_node_pool.primary: Still destroying... [id=projects/pf-devops-deviagge/locations/s...ops-gke/nodePools/pipeline-devops-pool, 02m20s elapsed]
+module.gke.google_container_node_pool.primary: Still destroying... [id=projects/pf-devops-deviagge/locations/s...ops-gke/nodePools/pipeline-devops-pool, 02m30s elapsed]
+module.gke.google_container_node_pool.primary: Still destroying... [id=projects/pf-devops-deviagge/locations/s...ops-gke/nodePools/pipeline-devops-pool, 02m40s elapsed]
+module.gke.google_container_node_pool.primary: Still destroying... [id=projects/pf-devops-deviagge/locations/s...ops-gke/nodePools/pipeline-devops-pool, 02m50s elapsed]
+module.gke.google_container_node_pool.primary: Still destroying... [id=projects/pf-devops-deviagge/locations/s...ops-gke/nodePools/pipeline-devops-pool, 03m00s elapsed]
+module.gke.google_container_node_pool.primary: Still destroying... [id=projects/pf-devops-deviagge/locations/s...ops-gke/nodePools/pipeline-devops-pool, 03m10s elapsed]
+module.gke.google_container_node_pool.primary: Still destroying... [id=projects/pf-devops-deviagge/locations/s...ops-gke/nodePools/pipeline-devops-pool, 03m20s elapsed]
+module.gke.google_container_node_pool.primary: Destruction complete after 3m26s
+module.gke.google_container_cluster.this: Destroying... [id=projects/pf-devops-deviagge/locations/southamerica-east1-a/clusters/pipeline-devops-gke]
+module.gke.google_container_cluster.this: Still destroying... [id=projects/pf-devops-deviagge/locations/s...a-east1-a/clusters/pipeline-devops-gke, 00m10s elapsed]
+module.gke.google_container_cluster.this: Still destroying... [id=projects/pf-devops-deviagge/locations/s...a-east1-a/clusters/pipeline-devops-gke, 00m20s elapsed]
+module.gke.google_container_cluster.this: Still destroying... [id=projects/pf-devops-deviagge/locations/s...a-east1-a/clusters/pipeline-devops-gke, 00m30s elapsed]
+module.gke.google_container_cluster.this: Still destroying... [id=projects/pf-devops-deviagge/locations/s...a-east1-a/clusters/pipeline-devops-gke, 00m40s elapsed]
+module.gke.google_container_cluster.this: Still destroying... [id=projects/pf-devops-deviagge/locations/s...a-east1-a/clusters/pipeline-devops-gke, 00m50s elapsed]
+module.gke.google_container_cluster.this: Still destroying... [id=projects/pf-devops-deviagge/locations/s...a-east1-a/clusters/pipeline-devops-gke, 01m00s elapsed]
+module.gke.google_container_cluster.this: Still destroying... [id=projects/pf-devops-deviagge/locations/s...a-east1-a/clusters/pipeline-devops-gke, 01m10s elapsed]
+module.gke.google_container_cluster.this: Still destroying... [id=projects/pf-devops-deviagge/locations/s...a-east1-a/clusters/pipeline-devops-gke, 01m20s elapsed]
+module.gke.google_container_cluster.this: Still destroying... [id=projects/pf-devops-deviagge/locations/s...a-east1-a/clusters/pipeline-devops-gke, 01m30s elapsed]
+module.gke.google_container_cluster.this: Still destroying... [id=projects/pf-devops-deviagge/locations/s...a-east1-a/clusters/pipeline-devops-gke, 01m40s elapsed]
+module.gke.google_container_cluster.this: Still destroying... [id=projects/pf-devops-deviagge/locations/s...a-east1-a/clusters/pipeline-devops-gke, 01m50s elapsed]
+module.gke.google_container_cluster.this: Still destroying... [id=projects/pf-devops-deviagge/locations/s...a-east1-a/clusters/pipeline-devops-gke, 02m00s elapsed]
+module.gke.google_container_cluster.this: Still destroying... [id=projects/pf-devops-deviagge/locations/s...a-east1-a/clusters/pipeline-devops-gke, 02m10s elapsed]
+module.gke.google_container_cluster.this: Still destroying... [id=projects/pf-devops-deviagge/locations/s...a-east1-a/clusters/pipeline-devops-gke, 02m20s elapsed]
+module.gke.google_container_cluster.this: Still destroying... [id=projects/pf-devops-deviagge/locations/s...a-east1-a/clusters/pipeline-devops-gke, 02m30s elapsed]
+module.gke.google_container_cluster.this: Still destroying... [id=projects/pf-devops-deviagge/locations/s...a-east1-a/clusters/pipeline-devops-gke, 02m40s elapsed]
+module.gke.google_container_cluster.this: Still destroying... [id=projects/pf-devops-deviagge/locations/s...a-east1-a/clusters/pipeline-devops-gke, 02m50s elapsed]
+module.gke.google_container_cluster.this: Still destroying... [id=projects/pf-devops-deviagge/locations/s...a-east1-a/clusters/pipeline-devops-gke, 03m00s elapsed]
+module.gke.google_container_cluster.this: Still destroying... [id=projects/pf-devops-deviagge/locations/s...a-east1-a/clusters/pipeline-devops-gke, 03m10s elapsed]
+module.gke.google_container_cluster.this: Still destroying... [id=projects/pf-devops-deviagge/locations/s...a-east1-a/clusters/pipeline-devops-gke, 03m20s elapsed]
+module.gke.google_container_cluster.this: Still destroying... [id=projects/pf-devops-deviagge/locations/s...a-east1-a/clusters/pipeline-devops-gke, 03m30s elapsed]
+module.gke.google_container_cluster.this: Still destroying... [id=projects/pf-devops-deviagge/locations/s...a-east1-a/clusters/pipeline-devops-gke, 03m40s elapsed]
+module.gke.google_container_cluster.this: Still destroying... [id=projects/pf-devops-deviagge/locations/s...a-east1-a/clusters/pipeline-devops-gke, 03m50s elapsed]
+module.gke.google_container_cluster.this: Still destroying... [id=projects/pf-devops-deviagge/locations/s...a-east1-a/clusters/pipeline-devops-gke, 04m00s elapsed]
+module.gke.google_container_cluster.this: Still destroying... [id=projects/pf-devops-deviagge/locations/s...a-east1-a/clusters/pipeline-devops-gke, 04m10s elapsed]
+module.gke.google_container_cluster.this: Still destroying... [id=projects/pf-devops-deviagge/locations/s...a-east1-a/clusters/pipeline-devops-gke, 04m20s elapsed]
+module.gke.google_container_cluster.this: Destruction complete after 4m27s
+module.network.google_compute_subnetwork.subnet: Destroying... [id=projects/pf-devops-deviagge/regions/southamerica-east1/subnetworks/pipeline-devops-subnet]
+module.network.google_compute_subnetwork.subnet: Still destroying... [id=projects/pf-devops-deviagge/regions/sou...st1/subnetworks/pipeline-devops-subnet, 00m10s elapsed]
+module.network.google_compute_subnetwork.subnet: Still destroying... [id=projects/pf-devops-deviagge/regions/sou...st1/subnetworks/pipeline-devops-subnet, 00m20s elapsed]
+module.network.google_compute_subnetwork.subnet: Still destroying... [id=projects/pf-devops-deviagge/regions/sou...st1/subnetworks/pipeline-devops-subnet, 00m30s elapsed]
+module.network.google_compute_subnetwork.subnet: Destruction complete after 32s
+module.network.google_compute_network.vpc: Destroying... [id=projects/pf-devops-deviagge/global/networks/pipeline-devops-vpc]
+module.network.google_compute_network.vpc: Still destroying... [id=projects/pf-devops-deviagge/global/networks/pipeline-devops-vpc, 00m10s elapsed]
+
+Error: Error waiting for Deleting Network: The network resource 'projects/pf-devops-deviagge/global/networks/pipeline-devops-vpc' is already being used by 'projects/pf-devops-deviagge/global/firewalls/k8s-4253adbe26ef249c-node-http-hc'
+
+
+module.network.google_compute_network.vpc: Refreshing state... [id=projects/pf-devops-deviagge/global/networks/pipeline-devops-vpc]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # module.network.google_compute_network.vpc will be destroyed
+  - resource "google_compute_network" "vpc" {
+      - auto_create_subnetworks                   = false -> null
+      - bgp_always_compare_med                    = false -> null
+      - bgp_best_path_selection_mode              = "LEGACY" -> null
+      - delete_default_routes_on_create           = false -> null
+      - enable_ula_internal_ipv6                  = false -> null
+      - id                                        = "projects/pf-devops-deviagge/global/networks/pipeline-devops-vpc" -> null
+      - mtu                                       = 0 -> null
+      - name                                      = "pipeline-devops-vpc" -> null
+      - network_firewall_policy_enforcement_order = "AFTER_CLASSIC_FIREWALL" -> null
+      - network_id                                = "5114351813909133724" -> null
+      - numeric_id                                = "5114351813909133724" -> null
+      - project                                   = "pf-devops-deviagge" -> null
+      - routing_mode                              = "REGIONAL" -> null
+      - self_link                                 = "https://www.googleapis.com/compute/v1/projects/pf-devops-deviagge/global/networks/pipeline-devops-vpc" -> null
+        # (5 unchanged attributes hidden)
+    }
+
+Plan: 0 to add, 0 to change, 1 to destroy.
+
+Changes to Outputs:
+  - cluster_location = "southamerica-east1-a" -> null
+  - cluster_name     = "pipeline-devops-gke" -> null
+  - get_credentials  = "gcloud container clusters get-credentials pipeline-devops-gke --zone southamerica-east1-a --project pf-devops-deviagge" -> null
+module.network.google_compute_network.vpc: Destroying... [id=projects/pf-devops-deviagge/global/networks/pipeline-devops-vpc]
+module.network.google_compute_network.vpc: Still destroying... [id=projects/pf-devops-deviagge/global/networks/pipeline-devops-vpc, 00m10s elapsed]
+module.network.google_compute_network.vpc: Still destroying... [id=projects/pf-devops-deviagge/global/networks/pipeline-devops-vpc, 00m20s elapsed]
+module.network.google_compute_network.vpc: Destruction complete after 22s
+
+Destroy complete! Resources: 1 destroyed.
+
+# Verificación posterior al destroy (2/10/2026)
+$ gcloud container clusters list  ->  0 recursos
+$ gcloud compute instances list  ->  0 recursos
+$ gcloud compute disks list  ->  0 recursos
+$ gcloud compute forwarding-rules list  ->  0 recursos
+$ gcloud compute addresses list  ->  0 recursos
+$ gcloud compute networks list  ->  default (solo la red por defecto del proyecto)
+$ terraform state list  ->  0 recursos

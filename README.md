@@ -109,5 +109,11 @@ En `docs/evidencias/`:
 | `10-github-actions-historial.png` | historial de runs en la pestaña Actions |
 | `11-seguridad-sast-dast.txt` | hallazgos abiertos de Trivy/CodeQL y resultado de OWASP ZAP |
 | `12-ghcr-imagen-publicada.txt` | push de la imagen a ghcr.io con sus tags y digest |
+| `13-terraform-apply.txt` | salida del `terraform apply` real en GCP: VPC, subred, cluster GKE y node pool |
+| `14-gke-despliegue.txt` | node pool spot con autoscaling, labels, pods, Ingress con IP pública y smoke test en GKE |
+| `15-terraform-destroy.txt` | salida del `terraform destroy` al terminar las pruebas |
+| `16-gcp-clusters.png`, `17-gcp-cluster-detalle.png` | el cluster en la consola de GCP |
+| `18-gcp-workloads.png`, `19-gcp-ingress.png` | workloads e Ingress de la app en GKE |
+| `20-gcp-vpc.png` | la red creada por el módulo `network` |
 
 Informe: `docs/informe.md`.
