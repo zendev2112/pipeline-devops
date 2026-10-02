@@ -20,6 +20,12 @@ spec:
   template:
     metadata: { labels: { app: grafana } }
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 472
+        runAsGroup: 472
+        fsGroup: 472
+        seccompProfile: { type: RuntimeDefault }
       containers:
         - name: grafana
           image: grafana/grafana:11.3.0
@@ -27,12 +33,22 @@ spec:
           env:
             - { name: GF_SECURITY_ADMIN_PASSWORD, value: admin }
             - { name: GF_AUTH_ANONYMOUS_ENABLED, value: "true" }
-          resources: { requests: { cpu: 50m, memory: 96Mi }, limits: { memory: 256Mi } }
+          resources: { requests: { cpu: 50m, memory: 96Mi }, limits: { cpu: 500m, memory: 256Mi } }
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: { drop: [ALL] }
           volumeMounts:
+            - { name: data, mountPath: /var/lib/grafana }
+            - { name: tmp, mountPath: /tmp }
             - { name: provisioning, mountPath: /etc/grafana/provisioning/datasources/datasource.yml, subPath: datasource.yml }
             - { name: provisioning, mountPath: /etc/grafana/provisioning/dashboards/dashboards.yml, subPath: dashboards.yml }
             - { name: dashboards, mountPath: /var/lib/grafana/dashboards }
       volumes:
+        - name: data
+          emptyDir: {}
+        - name: tmp
+          emptyDir: {}
         - name: provisioning
           configMap: { name: grafana-provisioning }
         - name: dashboards

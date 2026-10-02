@@ -35,3 +35,11 @@ test('GET /work limita las iteraciones', () => withServer(async (base) => {
   const body = await res.json();
   assert.equal(body.iterations, 5_000_000);
 }));
+
+test('las respuestas llevan cabeceras de seguridad', () => withServer(async (base) => {
+  const res = await fetch(`${base}/`);
+  assert.equal(res.headers.get('x-powered-by'), null);
+  assert.equal(res.headers.get('x-content-type-options'), 'nosniff');
+  assert.match(res.headers.get('content-security-policy'), /default-src 'self'/);
+  assert.ok(res.headers.get('permissions-policy'));
+}));

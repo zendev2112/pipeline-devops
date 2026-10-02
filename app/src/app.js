@@ -1,8 +1,15 @@
 import express from 'express';
+import helmet from 'helmet';
 import client from 'prom-client';
 
 export function buildApp() {
   const app = express();
+  // Cabeceras de seguridad (CSP, nosniff, CORP, sin X-Powered-By); helmet no cubre Permissions-Policy
+  app.use(helmet());
+  app.use((_req, res, next) => {
+    res.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
+    next();
+  });
   const register = new client.Registry();
   client.collectDefaultMetrics({ register });
 
