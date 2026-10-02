@@ -104,5 +104,10 @@ En `docs/evidencias/`:
 | `05-prometheus-targets.png` | pantalla Targets de Prometheus |
 | `06-grafana-dashboard.png` | dashboard `pipeline-devops-app` con tráfico real |
 | `07-github-actions-run.txt` | run completo del pipeline con los 6 jobs en verde |
+| `08-prometheus-alertas.png` | las 3 reglas de alerta cargadas en Prometheus |
+| `09-github-actions-run.png` | captura del run con el grafo de los 6 jobs en verde |
+| `10-github-actions-historial.png` | historial de runs en la pestaña Actions |
+| `11-seguridad-sast-dast.txt` | hallazgos abiertos de Trivy/CodeQL y resultado de OWASP ZAP |
+| `12-ghcr-imagen-publicada.txt` | push de la imagen a ghcr.io con sus tags y digest |
 
 Informe: `docs/informe.md`.

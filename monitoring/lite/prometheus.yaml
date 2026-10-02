@@ -28,7 +28,8 @@ kind: ConfigMap
 metadata: { name: prometheus-config, namespace: monitoring }
 data:
   prometheus.yml: |
-    global: { scrape_interval: 15s }
+    global: { scrape_interval: 15s, evaluation_interval: 15s }
+    rule_files: [/etc/prometheus/alerts.yml]
     scrape_configs:
       - job_name: kubernetes-pods
         kubernetes_sd_configs: [{ role: pod }]
@@ -52,6 +53,28 @@ data:
             target_label: app
       - job_name: prometheus
         static_configs: [{ targets: ["localhost:9090"] }]
+  alerts.yml: |
+    groups:
+      - name: pipeline-devops-app
+        rules:
+          - alert: AppCaida
+            expr: sum(up{app="pipeline-devops-app"}) < 1 or absent(up{app="pipeline-devops-app"})
+            for: 1m
+            labels: { severity: critical }
+            annotations:
+              summary: Ningún pod de la app responde al scrape
+          - alert: TasaErrores5xxAlta
+            expr: sum(rate(http_requests_total{status=~"5.."}[5m])) / sum(rate(http_requests_total[5m])) > 0.05
+            for: 2m
+            labels: { severity: warning }
+            annotations:
+              summary: Más del 5 % de las requests devuelven 5xx
+          - alert: LatenciaP95Alta
+            expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le)) > 0.5
+            for: 5m
+            labels: { severity: warning }
+            annotations:
+              summary: La latencia p95 supera 500 ms
 ---
 apiVersion: apps/v1
 kind: Deployment

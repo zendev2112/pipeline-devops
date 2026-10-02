@@ -1,0 +1,6 @@
+# Job "Build & push imagen", run 37032715308 (2/10/2026), commit 982c1a3
+pushing manifest for ghcr.io/zendev2112/pipeline-devops-app:latest@sha256:1f42e09c7883ca207e06508d32553dd523113e98b2ed833153aa9036259167e0 1.1s done
+pushing manifest for ghcr.io/zendev2112/pipeline-devops-app:sha-982c1a3@sha256:1f42e09c7883ca207e06508d32553dd523113e98b2ed833153aa9036259167e0 0.4s done
+tags: latest, sha-982c1a3
+org.opencontainers.image.revision=982c1a3ea55f6d4c06d088e6727fc8ecb058728a
+org.opencontainers.image.source=https://github.com/zendev2112/pipeline-devops

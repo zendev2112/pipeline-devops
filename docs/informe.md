@@ -1,6 +1,6 @@
 # Informe · Proyecto final DevOps (Coderhouse)
 
-**Alumno:** Zenón Deviagge · **Fecha:** 1 de octubre de 2026 · **Repositorio:** https://github.com/zendev2112/pipeline-devops
+**Alumno:** Zenón Deviagge · **Fecha:** 2 de octubre de 2026 · **Repositorio:** https://github.com/zendev2112/pipeline-devops
 
 Versión editable del informe (con diagrama e imágenes): https://claude.ai/code/artifact/87f835e3-cc46-4eff-aa8b-9f3dde8e519b
 
@@ -78,18 +78,20 @@ Prometheus scrapea `/metrics` de cada pod cada 15 s; Grafana muestra un dashboar
 | `monitoring/lite/` (default local) | Prometheus y Grafana como Deployments planos, descubrimiento por anotaciones `prometheus.io/*`, ~250 MB | clusters locales chicos (la notebook: 2 núcleos, 7 GB, VM de Docker de 1,7 GB) |
 | `kube-prometheus-values.yaml` con Helm | kube-prometheus-stack completo, usa el ServiceMonitor | GKE, o local con `MONITORING=full` y ≥ 4 GB en Docker Desktop |
 
+Alertas: la variante lite carga tres reglas (`alerts.yml` en el ConfigMap de Prometheus): `AppCaida` (ningún pod responde al scrape durante 1 min), `TasaErrores5xxAlta` (más del 5 % de requests con 5xx durante 2 min) y `LatenciaP95Alta` (p95 mayor a 500 ms durante 5 min). No hay Alertmanager: las alertas se ven en la pantalla Alerts de Prometheus, sin notificación externa.
+
 El stack completo saturaba el API server local y el scheduler perdía la elección de líder; la variante lite se escribió para demostrar el monitoreo en esta máquina sin renunciar al stack completo en la nube.
 
 ## 7. Seguridad (SAST / DAST)
 
-| Análisis | Tipo | Resultado al 1/10/2026 |
+| Análisis | Tipo | Resultado al 2/10/2026 |
 | --- | --- | --- |
 | CodeQL | SAST | sin alertas |
-| Trivy config | IaC | 30 hallazgos, todos sobre los pods de Prometheus/Grafana de `monitoring/lite` (sin `securityContext`); los pods de la app pasan limpios |
+| Trivy config | IaC | 15 hallazgos abiertos (eran 30; 27 alertas cerradas en total): 9 sobre Terraform (cluster no privado, sin network policy, sin flow logs, sin service account dedicada para los nodos), 2 sobre el Deployment de la app (tag `latest`, registry no restringido) y 4 sobre Prometheus/Grafana lite (registry, UID de Grafana menor a 10000) |
 | Trivy image | imagen | sin HIGH/CRITICAL |
-| OWASP ZAP baseline | DAST | 1 medio, 4 bajos, 1 informativo; todos sobre cabeceras HTTP (CSP, X-Content-Type-Options, Permissions-Policy, X-Powered-By) |
+| OWASP ZAP baseline | DAST | 1 medio y 1 informativo (eran 1 medio, 4 bajos, 1 informativo). Queda una directiva CSP sin fallback |
 
-Pendiente: `securityContext` en los pods lite y `helmet` en Express. Ninguna credencial en el repo.
+Corregido el 2/10: `helmet` y `Permissions-Policy` en Express (cerró los 4 hallazgos bajos de ZAP); `securityContext` sin root, sistema de archivos de solo lectura, capabilities descartadas y límite de CPU en Prometheus y Grafana lite. Deuda conocida: los 9 hallazgos de Terraform son endurecimientos de GKE (cluster privado, redes autorizadas, network policy) que se dejaron fuera para mantener el cluster de pruebas simple y barato. Ninguna credencial en el repo.
 
 ## 8. FinOps
 
@@ -101,7 +103,11 @@ Ver README: nivel 1 `docker compose up --build`; nivel 2 `./scripts/local-up.sh`
 
 ## 10. Evidencias
 
-En `docs/evidencias/`: `01-smoke-test-ingress.txt`, `02-kubectl-estado-cluster-local.txt`, `03-hpa-escalado-bajo-carga.txt`, `04-prometheus-targets.txt`, `05-prometheus-targets.png`, `06-grafana-dashboard.png`, `07-github-actions-run.txt`. Runs verdes: 36853075344, 36859373945, 36859434832.
+En `docs/evidencias/`: `01-smoke-test-ingress.txt`, `02-kubectl-estado-cluster-local.txt`, `03-hpa-escalado-bajo-carga.txt`, `04-prometheus-targets.txt`, `05-prometheus-targets.png`, `06-grafana-dashboard.png`, `07-github-actions-run.txt`, `08-prometheus-alertas.png`, `09-github-actions-run.png`, `10-github-actions-historial.png`, `11-seguridad-sast-dast.txt`, `12-ghcr-imagen-publicada.txt`. Último run verde: 37032715308.
+
+![Run de GitHub Actions](evidencias/09-github-actions-run.png)
+
+![Alertas de Prometheus](evidencias/08-prometheus-alertas.png)
 
 ![Prometheus targets](evidencias/05-prometheus-targets.png)
 
@@ -109,7 +115,7 @@ En `docs/evidencias/`: `01-smoke-test-ingress.txt`, `02-kubectl-estado-cluster-l
 
 ## 11. Log de dificultades y soluciones
 
-Ver [`log-dificultades.md`](log-dificultades.md): 14 problemas con causa y solución, del disco lleno al UID no numérico.
+Ver [`log-dificultades.md`](log-dificultades.md): 15 problemas con causa y solución, del disco lleno al UID no numérico.
 
 ## 12. Estado del entregable
 
@@ -122,10 +128,10 @@ Funcionando al 85 %. Todo lo que pide la consigna existe, está en el repo y fue
 | Terraform con variables y módulos | 75 % (sin `apply` real) |
 | Pipeline CI/CD completo | 100 % |
 | Manifiestos K8s + HPA | 100 % |
-| Monitoreo | 90 % (lite probado; Helm completo no probado en esta máquina) |
+| Monitoreo | 95 % (lite probado con dashboard y 3 reglas de alerta; Helm completo no probado en esta máquina) |
 | FinOps | 90 % (sin evidencia de facturación) |
 | README y evidencias | 100 % |
 
-Para el 100 %: `terraform apply` de una hora con capturas y `destroy`; `securityContext` en lite y `helmet`; probar `MONITORING=full` con más memoria o en GKE.
+Para el 100 %: `terraform apply` de una hora con capturas y `destroy`; endurecer GKE según Trivy; probar `MONITORING=full` con más memoria o en GKE.
 
 **Conclusiones.** Lo costoso no fue ninguna herramienta sino la integración: los fallos aparecieron en las junturas. El diagnóstico automático en el job de deploy acortó cada iteración, y los límites de la máquina llevaron a una mejora: monitoreo liviano para entornos chicos y completo para la nube.

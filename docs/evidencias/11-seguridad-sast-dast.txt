@@ -1,0 +1,22 @@
+$ gh api repos/zendev2112/pipeline-devops/code-scanning/alerts (abiertas, 2/10/2026)
+Trivy | error | Legacy metadata endpoints enabled. | terraform/modules/gke/main.tf
+Trivy | error | Master authorized networks should be configured on GKE clusters | terraform/modules/gke/main.tf
+Trivy | error | Node metadata value disables metadata concealment. | terraform/modules/gke/main.tf
+Trivy | note | Ensure Container-Optimized OS (cos) is used for Kubernetes Engine Clusters Node image | terraform/modules/gke/main.tf
+Trivy | note | Runs with GID <= 10000 | monitoring/lite/grafana.yaml
+Trivy | note | Runs with UID <= 10000 | monitoring/lite/grafana.yaml
+Trivy | note | VPC flow logs should be enabled for all subnetworks | terraform/modules/network/main.tf
+Trivy | warning | Checks for service account defined for GKE nodes | terraform/modules/gke/main.tf
+Trivy | warning | Clusters should be set to private | terraform/modules/gke/main.tf
+Trivy | warning | Google Compute Subnetwork Logging Disabled | terraform/modules/network/main.tf
+Trivy | warning | Image tag ":latest" used | k8s/deployment.yaml
+Trivy | warning | Network Policy should be enabled on GKE clusters | terraform/modules/gke/main.tf
+Trivy | warning | Restrict container images to trusted registries | k8s/deployment.yaml
+Trivy | warning | Restrict container images to trusted registries | monitoring/lite/grafana.yaml
+Trivy | warning | Restrict container images to trusted registries | monitoring/lite/prometheus.yaml
+
+Cerradas (corregidas): 27
+
+# OWASP ZAP baseline, run 37032715308
+Medium | CSP: Failure to Define Directive with No Fallback | 2 instancias
+Informational | Storable and Cacheable Content | 3 instancias
